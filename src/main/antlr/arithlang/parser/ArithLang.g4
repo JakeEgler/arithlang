@@ -12,6 +12,7 @@ grammar ArithLang;
         | s=subexp  { $ast = $s.ast; }
         | m=multexp { $ast = $m.ast; }
         | d=divexp  { $ast = $d.ast; }
+        | p=powexp  { $ast = $p.ast; }
         ;
   
  numexp returns [NumExp ast]:
@@ -55,6 +56,15 @@ grammar ArithLang;
  		      e=exp { $list.add($e.ast); }
  		    ( e=exp { $list.add($e.ast); } )+ 
  		')' { $ast = new DivExp($list); }
+ 		;
+
+ powexp returns [PowExp ast]
+        locals [ArrayList<Exp> list]
+ 		@init { $list = new ArrayList<Exp>(); } :
+ 		'(' '^'
+ 		      e=exp { $list.add($e.ast); }
+ 		    ( e=exp { $list.add($e.ast); } )+
+ 		')' { $ast = new PowExp($list); }
  		;
 
 

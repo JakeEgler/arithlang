@@ -44,5 +44,12 @@ public class Printer {
                 result.append(" ").append(exp.accept(this));
             return result + ")";
         }
+
+        public String visit(PowExp e) {
+            StringBuilder result = new StringBuilder("(^");
+            for (AST.Exp exp : e.all())
+                result.append(" ").append(exp.accept(this));
+            return result + ")";
+        }
     }
 }

@@ -59,6 +59,21 @@ public class Evaluator implements Visitor<Value> {
     }
 
     @Override
+    public Value visit(PowExp e) {
+        // semantics for pow expression -- the result is the result of
+        // an operand to the power of the operand to the right of it,
+        // in sequence, from right to left
+        List<Exp> operands = e.all();
+        NumVal rVal = (NumVal) operands.get(operands.size() - 1).accept(this);
+        double result = rVal.v();
+        for (int i = operands.size() - 2; i >= 0; i--) {
+            NumVal lVal = (NumVal) operands.get(i).accept(this);
+            result = Math.pow(lVal.v(), result);
+        }
+        return new NumVal(result);
+    }
+
+    @Override
     public Value visit(Program p) {
         return (Value) p.e().accept(this);
     }
